@@ -1,0 +1,21 @@
+---
+- name: install start and enable httpd
+  hosts: ubtunu
+  tasks:
+    - name: install httpd
+      yum:
+        name: httpd
+        state: latest
+
+    - name: start httpd
+      service:
+        name: httpd
+        state: started
+
+    - name: enable httpd
+      service:
+        name: httpd
+        enabled: true
+
+    - name: ensure /var/www/html/index.html exists
+      file:
