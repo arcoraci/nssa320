@@ -29,6 +29,24 @@
           OS Version: {{ ansible_distribution_version }}
           Managed by: Ansible AWX
 
+    - name: Install vsftpd
+      ansible.builtin.dnf:
+        name: vsftpd
+        state: present
+
+    - name: Enable and start vsftpd
+      ansible.builtin.service:
+        name: vsftpd
+        state: started
+        enabled: true
+
+    - name: Allow FTP through firewalld
+      ansible.posix.firewalld:
+        service: ftp
+        permanent: true
+        immediate: true
+        state: enabled
+
 - name: Configure and validate Windows managed hosts
   hosts: windows
   gather_facts: true
