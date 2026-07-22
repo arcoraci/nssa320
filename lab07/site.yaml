@@ -1,0 +1,53 @@
+---
+- name: Configure and validate Linux managed hosts
+  hosts: linux
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Verify Ansible connectivity to Linux
+      ansible.builtin.ping:
+
+    - name: Create the Lab 7 directory
+      ansible.builtin.file:
+        path: /opt/lab7
+        state: directory
+        owner: root
+        group: root
+        mode: "0755"
+
+    - name: Create the Lab 7 verification file
+      ansible.builtin.copy:
+        dest: /opt/lab7/awx-verification.txt
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          Lab 7 AWX Automation Verification
+          Hostname: {{ ansible_hostname }}
+          Operating System: {{ ansible_distribution }}
+          OS Version: {{ ansible_distribution_version }}
+          Managed by: Ansible AWX
+
+- name: Configure and validate Windows managed hosts
+  hosts: windows
+  gather_facts: true
+
+  tasks:
+    - name: Verify Ansible connectivity to Windows
+      ansible.windows.win_ping:
+
+    - name: Create the Lab 7 directory
+      ansible.windows.win_file:
+        path: C:\Lab7
+        state: directory
+
+    - name: Create the Lab 7 verification file
+      ansible.windows.win_copy:
+        dest: C:\Lab7\awx-verification.txt
+        content: |
+          Lab 7 AWX Automation Verification
+          Hostname: {{ ansible_hostname }}
+          Operating System: {{ ansible_distribution }}
+          OS Version: {{ ansible_distribution_version }}
+          Managed by: Ansible AWX
